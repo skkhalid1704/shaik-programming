@@ -1,26 +1,25 @@
-import { CallAPI } from "./components/MyFirstRequest.tsx";
-import { useState } from "react";
+// App.tsx
+import { Routes, Route } from "react-router-dom";
+import HomePage from "./components/HomePage";
+import LoginPage from "./components/LoginPage";
+import Layout from "./components/Layout";
+import ProductPage from "./components/ProductPage";
+import { AuthProvider } from "./context/AuthContext";
+import RegisterPage from "./components/RegisterPage";
 
-function App() {
-  const [response, setResponse] = useState();
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
-
-  const fetchData = async () => {
-    const response = await CallAPI();
-    setResponse(response);
-    setIsButtonClicked(true);
-  };
-
+const App = () => {
   return (
-    <>
-      <h1>Hi! Welcome to my first react code.</h1>
-      <p>{response || "Press button to reveal a fact"}</p>
-      {isButtonClicked ? (
-        <button onClick={fetchData}>Reveal another fact </button>
-      ) : (
-        <button onClick={fetchData}>Reveal a fact </button>
-      )}
-    </>
+    <AuthProvider>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/product/:productId" element={<ProductPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
-}
+};
 export default App;
